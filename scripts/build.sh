@@ -11,10 +11,6 @@ DIR="$( cd -P "$( dirname "$SOURCE" )/.." && pwd )"
 # Change into that directory
 cd $DIR
 
-# Get the git commit
-GIT_COMMIT=$(git rev-parse HEAD)
-GIT_DIRTY=$(test -n "`git status --porcelain`" && echo "+CHANGES" || true)
-
 # If we're building on Windows, specify an extension
 EXTENSION=""
 if [ "$(go env GOOS)" = "windows" ]; then
@@ -46,7 +42,6 @@ go get \
 # Build!
 echo "--> Building..."
 go build \
-    -ldflags "${CGO_LDFLAGS} -X main.GitCommit ${GIT_COMMIT}${GIT_DIRTY}" \
     -v \
     -o bin/arm${EXTENSION}
 cp bin/arm${EXTENSION} ${GOPATHSINGLE}/bin
